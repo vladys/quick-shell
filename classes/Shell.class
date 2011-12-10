@@ -1,0 +1,55 @@
+<?php
+class Shell {
+	private static $cmd;
+	private static $dir;
+	
+	public static function parse($command) {
+		self::init();
+		$cmd = trim($command);
+		if (strpos($cmd, 'cd ') === 0) {
+			$cd = trim(substr($cmd, 3));
+			$cd = (strpos($cd, '/') === 0 || $cd === '~') ? $cd : (rtrim(self::$dir,'/').'/'.$cd);
+			self::log("cd $cd");
+			$cd = exec("cd $cd; pwd");
+			self::$dir = $cd;
+			$_SESSION['dir'] = self::$dir;
+			self::$cmd = 'cd';
+		} else {
+			self::$cmd = $cmd;
+			self::log($cmd);
+		}
+	}
+	
+	public static function cwd() {
+		if (self::$dir == "") self::init();
+		return self::$dir;
+	}
+
+	public static function scwd() {
+		return substr(self::$dir, strrpos(self::$dir, '/') + 1);
+	}
+
+	public static function exec() {
+		$output = '';
+		if (self::$cmd !== 'cd') {
+			$dir = self::$dir;
+			$cmd = self::$cmd;
+			$lines = array();
+			exec("cd $dir; $cmd", $lines);
+			foreach($lines as $line) {
+				echo htmlspecialchars($line)."\n";
+			}
+		}
+		return $output;
+	}
+	
+	private static function log($cmd) {
+		echo '<div id="cmd">'.self::scwd().'$ '.$cmd.'</div>';
+	}
+
+	private static function init() {
+		session_start();
+		self::$dir = isset($_SESSION['dir']) ? $_SESSION['dir'] : getcwd();
+	}	
+}
+?>

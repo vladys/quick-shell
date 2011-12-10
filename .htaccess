@@ -1,0 +1,7 @@
+AuthUserFile .htpasswd
+AuthName "What are you looking here for?"
+AuthType Basic
+Require valid-user
+
+DirectoryIndex shell.php
+IndexIgnore *
