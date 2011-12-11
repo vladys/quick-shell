@@ -1,6 +1,6 @@
 <?php 
 include_once('classes/Shell.class');
-Shell::parse($_POST['command']);
+$cmd = Shell::parse($_POST['command']);
 ?>
 <html>
 <head>
@@ -71,6 +71,7 @@ Shell::parse($_POST['command']);
 </script>
 </head>
 <body onload="document.shell.command.focus()">
+<div id="cmd"><?=Shell::scwd().'$ '.Shell::cmd()?></div>
 <form id="shell-form" action="shell.php" method="post" name="shell" onsubmit="spinner(true)">
   <span id="cwd"><?=Shell::scwd()?>$ </span><input type="text" id="command" name="command" style="width:80%" value="<?=$cmd?>"/>
 </form>

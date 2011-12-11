@@ -1,7 +1,7 @@
 <?php
 class Shell {
 	private static $cmd;
-	private static $dir;
+	private static $dir = '';
 	
 	public static function parse($command) {
 		self::init();
@@ -9,19 +9,16 @@ class Shell {
 		if (strpos($cmd, 'cd ') === 0) {
 			$cd = trim(substr($cmd, 3));
 			$cd = (strpos($cd, '/') === 0 || $cd === '~') ? $cd : (rtrim(self::$dir,'/').'/'.$cd);
-			self::log("cd $cd");
-			$cd = exec("cd $cd; pwd");
-			self::$dir = $cd;
-			$_SESSION['dir'] = self::$dir;
-			self::$cmd = 'cd';
+			$dir = exec("cd $cd; pwd");
+			self::setCwd($dir);
+			self::$cmd = "cd $cd";
 		} else {
 			self::$cmd = $cmd;
-			self::log($cmd);
 		}
 	}
 	
 	public static function cwd() {
-		if (self::$dir == "") self::init();
+		if (self::$dir === '') self::init();
 		return self::$dir;
 	}
 
@@ -31,7 +28,7 @@ class Shell {
 
 	public static function exec() {
 		$output = '';
-		if (self::$cmd !== 'cd') {
+		if (strpos(self::$cmd, 'cd ') !== 0) {
 			$dir = self::$dir;
 			$cmd = self::$cmd;
 			$lines = array();
@@ -43,13 +40,21 @@ class Shell {
 		return $output;
 	}
 	
-	private static function log($cmd) {
-		echo '<div id="cmd">'.self::scwd().'$ '.$cmd.'</div>';
+	public static function cmd() {
+		return self::$cmd;
 	}
 
 	private static function init() {
-		session_start();
-		self::$dir = isset($_SESSION['dir']) ? $_SESSION['dir'] : getcwd();
+		if (isset($_COOKIE['shell_cdir'])) {
+			self::$dir = $_COOKIE['shell_cdir'];
+		} else {
+			self::setCwd(getcwd());
+		}
 	}	
+	
+	private static function setCwd($dir) {
+		self::$dir = $dir;
+		setcookie('shell_cdir', self::$dir);
+	}
 }
 ?>
