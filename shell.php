@@ -83,7 +83,7 @@ Shell::exec();
 </pre></div>
 <div id="upload">
 	<form id="file-upload-form" name="form" action="" method="POST" enctype="multipart/form-data">
-		<input type="file" id="fileToUpload" name="fileToUpload" style="display:none" onchange="ajaxFileUpload()"/>
+		<input type="file" id="fileToUpload" name="fileToUpload" style="width:0;height:0" onchange="ajaxFileUpload()"/>
 		<input type="button" id="upload-button" value="Upload file" accesskey="u" onclick="selectFile()"/>
 		<span id="loading" style="display:none"><img src="img/spinner.gif" align="right"/></span>
 		<span id="status" style="display:none"></span>
