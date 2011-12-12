@@ -1,0 +1,22 @@
+== About ==
+
+Quick-shell is a web console that can be used as a replacement of SSH client or rather when SSH connection is not available as the case with cheap web hostings (usually PHP-based). Main purpose of it is the files management in the same way as you would do it via command line interface.
+
+== Installation ==
+
+1. Copy quick-shell to you destination hosting.
+2. Generate .htpasswd file at http://www.htaccesstools.com/htpasswd-generator/ and save it in the quick-shell's root folder.
+
+== Usage example ==
+
+For instance, after installation you can re-generate your .htpasswd file right from quick-shell by executing the following commands in the quick-shell's home directory:
+
+$ htpasswd -c .htpasswd username secret-password
+
+To see whether the file has been generated:
+
+$ la -a
+$ cat .htpasswd
+
+
+Happy hacking!
