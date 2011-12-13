@@ -32,6 +32,8 @@ $cmd = Shell::parse($_POST['command']);
 		alert(document.getElementById('fileToUpload').value);
 	}
 	function ajaxFileUpload() {
+		if (!$(this).val()) return;
+		
 		$("#loading")
 		.ajaxStart(function() {
 			$(this).show();
