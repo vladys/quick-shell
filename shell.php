@@ -32,21 +32,21 @@ $cmd = Shell::parse($_POST['command']);
 		alert(document.getElementById('fileToUpload').value);
 	}
 	function ajaxFileUpload() {
-		if (!$(this).val()) return;
+		if (!$("#fileToUpload").val()) return;
 		
 		$("#loading")
-		.ajaxStart(function() {
-			$(this).show();
-		})
-		.ajaxComplete(function() {
-			$(this).hide();
-		});
+			.ajaxStart(function() {
+				$(this).show();
+			})
+			.ajaxComplete(function() {
+				$(this).hide();
+			});
 		
 		$("#status")
-		.ajaxStart(function() {
-			$(this).html('Uploading ' + $("#fileToUpload").val() + '...');
-			$(this).show();
-		})
+			.ajaxStart(function() {
+				$(this).html('Uploading ' + $("#fileToUpload").val() + '...');
+				$(this).show();
+			});
 
 		$.ajaxFileUpload({
 			url: 'ajaxfileupload.php',
